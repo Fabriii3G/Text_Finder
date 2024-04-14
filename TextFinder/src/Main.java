@@ -1,10 +1,6 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-
 import Parsers.*;
-import org.apache.xmlbeans.impl.xb.xsdschema.TopLevelSimpleType;
 
 public class Main extends JFrame {
     private JPanel MainPanel;
@@ -28,20 +24,13 @@ public class Main extends JFrame {
         File txtDocument =  new File("C:\\Users\\XPC\\OneDrive - Estudiantes ITCR\\Escritorio\\Text_Finder\\TextFinder\\hola.txt");
         TXTParser TXT = new TXTParser(txtDocument);
         TXT.parser();
-        SearchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SearchTextFieldController();
-            }
-        });
+        SearchButton.addActionListener(e -> SearchTextFieldController());
     }
 
     public void SearchTextFieldController(){
         String Search = ToSearch.getText();
         if(!Search.isEmpty()){
             System.out.println(Search);
-        }else{
-            return;
         }
     }
 

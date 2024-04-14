@@ -4,8 +4,6 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 public class DOCXParser implements Parser {
     File DOCX;
