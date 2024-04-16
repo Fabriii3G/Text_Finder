@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-
 public class PDFParser implements Parser {
     File PDF;
     String PDFPath;
@@ -12,15 +11,17 @@ public class PDFParser implements Parser {
         this.PDFPath = this.PDF.getPath();
     }
     @Override
-    public void parser() {
+    public String parser() {
         try {
             PDDocument document = PDDocument.load(new File(this.PDFPath));
             PDFTextStripper pdfTextStripper = new PDFTextStripper();
             String ParsedText = pdfTextStripper.getText(document);
             document.close();
             System.out.println(ParsedText);
+            return ParsedText;
         } catch (IOException e){
             e.printStackTrace();
         }
+        return null;
     }
 }

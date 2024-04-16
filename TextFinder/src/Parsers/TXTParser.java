@@ -1,8 +1,7 @@
 package Parsers;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.FileReader;
+import java.util.Scanner;
 public class TXTParser implements Parser{
     File TXT;
     String TXTPath;
@@ -11,14 +10,20 @@ public class TXTParser implements Parser{
         this.TXTPath = this.TXT.getPath();
     }
     @Override
-    public void parser() {
-        try(BufferedReader reader = new BufferedReader(new FileReader(this.TXTPath))){
-            String line;
-            while ((line = reader.readLine()) != null){
-                System.out.println(line);
+    public String parser() {
+        try {
+            Scanner scanner = new Scanner(this.TXT);
+            StringBuilder parsedTextBuilder = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                parsedTextBuilder.append(scanner.nextLine()).append("\n");
             }
-        }catch (IOException e){
-            System.err.println("Error al leer el archivo: " + e.getMessage());
+            String parsedText = parsedTextBuilder.toString();
+            scanner.close();
+            System.out.println(parsedText);
+            return parsedText;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 }
