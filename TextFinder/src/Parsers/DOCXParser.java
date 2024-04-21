@@ -7,9 +7,11 @@ import java.io.IOException;
 public class DOCXParser implements Parser {
     File DOCX;
     String DOCXPath;
+    String parsedText;
     public DOCXParser(File DOCXFile){
         this.DOCX = DOCXFile;
         this.DOCXPath = this.DOCX.getPath();
+        this.parsedText = parser();
     }
     @Override
     public String parser() {
@@ -19,11 +21,20 @@ public class DOCXParser implements Parser {
             XWPFWordExtractor extractor = new XWPFWordExtractor(document);
             String parsedText = extractor.getText();
             fis.close();
-            System.out.println(parsedText);
             return parsedText;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+    @Override
+    public Boolean Search(String string) {
+        if (this.parsedText != null && this.parsedText.contains(string)){
+            System.out.println(true);
+            return true;
+        } else {
+            System.out.println(false);
+            return false;
+        }
     }
 }

@@ -5,9 +5,11 @@ import java.util.Scanner;
 public class TXTParser implements Parser{
     File TXT;
     String TXTPath;
+    String parsedText;
     public TXTParser(File TXTFile){
         this.TXT = TXTFile;
         this.TXTPath = this.TXT.getPath();
+        this.parsedText = parser();
     }
     @Override
     public String parser() {
@@ -19,11 +21,22 @@ public class TXTParser implements Parser{
             }
             String parsedText = parsedTextBuilder.toString();
             scanner.close();
-            System.out.println(parsedText);
             return parsedText;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    @Override
+    public Boolean Search(String string) {
+        if (this.parsedText != null && this.parsedText.contains(string)){
+            System.out.println(true);
+            return true;
+        } else {
+            System.out.println(false);
+            return false;
+        }
+    }
+
 }
