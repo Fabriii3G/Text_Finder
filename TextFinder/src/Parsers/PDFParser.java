@@ -6,9 +6,11 @@ import org.apache.pdfbox.text.PDFTextStripper;
 public class PDFParser implements Parser {
     File PDF;
     String PDFPath;
+    String parsedText;
     public PDFParser(File PdfFile){
         this.PDF = PdfFile;
         this.PDFPath = this.PDF.getPath();
+        this.parsedText = parser();
     }
     @Override
     public String parser() {
@@ -24,4 +26,15 @@ public class PDFParser implements Parser {
         }
         return null;
     }
+    @Override
+    public Boolean Search(String string) {
+        if (this.parsedText != null && this.parsedText.contains(string)){
+            System.out.println(true);
+            return true;
+        } else {
+            System.out.println(false);
+            return false;
+        }
+    }
+
 }
