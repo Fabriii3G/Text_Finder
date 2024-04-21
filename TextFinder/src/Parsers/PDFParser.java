@@ -19,7 +19,6 @@ public class PDFParser implements Parser {
             PDFTextStripper pdfTextStripper = new PDFTextStripper();
             String ParsedText = pdfTextStripper.getText(document);
             document.close();
-            System.out.println(ParsedText);
             return ParsedText;
         } catch (IOException e){
             e.printStackTrace();

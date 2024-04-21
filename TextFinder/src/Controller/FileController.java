@@ -1,18 +1,25 @@
+package Controller;
 import java.io.File;
+import java.util.ArrayList;
 import Parsers.*;
 import DataStructures.*;
 
 public class FileController {
-    File file;
-    File files[];
-    File fileDOCX;
-    File fileTXT;
-    File filePDF;
-    String name;
-    Parser parser;
-    AVLTree avlTree = new AVLTree();
-    SinglyLinkedList ocurrences = new SinglyLinkedList();
-    public FileController(File file) {
+    public File file;
+    public File files[];
+    public File fileDOCX;
+    public File fileTXT;
+    public File filePDF;
+    public String name;
+    public Parser parser;
+    public AVLTree avlTree = new AVLTree();
+    public SinglyLinkedList ocurrences = new SinglyLinkedList();
+    public FileController(ArrayList<File> files) {
+        for (File file : files){
+            FileControllerAux(file);
+        }
+    }
+    public void FileControllerAux(File file) {
         this.file = file;
         this.name = this.file.getName();
         if (name.endsWith(".docx")) {
@@ -31,7 +38,6 @@ public class FileController {
     }
     public void ToAVLTree(String text, SinglyLinkedList ocurrences){
         if (text != null && !text.isEmpty()) {
-            // Dividir el texto en palabras usando espacios como delimitador
             String[] words = text.split("\\s+");
             for (String word : words) {
                 avlTree.insert(word, ocurrences);

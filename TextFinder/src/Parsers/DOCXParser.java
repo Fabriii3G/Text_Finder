@@ -21,7 +21,6 @@ public class DOCXParser implements Parser {
             XWPFWordExtractor extractor = new XWPFWordExtractor(document);
             String parsedText = extractor.getText();
             fis.close();
-            System.out.println(parsedText);
             return parsedText;
         } catch (IOException e) {
             e.printStackTrace();

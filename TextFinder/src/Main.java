@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.io.File;
-
+import java.util.ArrayList;
+import Controller.*;
 public class Main extends JFrame {
     private JPanel MainPanel;
     private JTextField ToSearch;
@@ -14,7 +15,7 @@ public class Main extends JFrame {
     private FileController controller;
     private JList ListOfFiles;
     private DefaultListModel<String> Model;
-
+    private ArrayList<File> Files = new ArrayList<>();
 
     public Main(){
         setContentPane(MainPanel);
@@ -28,44 +29,41 @@ public class Main extends JFrame {
         AddButton.addActionListener(e -> AddToLib());
         RemoveButton.addActionListener(e -> RemoveFromLib());
         SearchButton.addActionListener(e -> SearchText());
-        IndexingButton.addActionListener(e -> LibraryIndexing());
+        IndexingButton.addActionListener(e -> LibIndexing());
     }
-
     public void AddToLib() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         int returnValue = fileChooser.showOpenDialog(null);
-
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             this.selectedFile = fileChooser.getSelectedFile();
-            if (this.selectedFile.isFile()){
-                this.controller = new FileController(this.selectedFile);
-                AddToLibAux(this.selectedFile);
-            }else{
-                this.selectedFiles = this.selectedFile.listFiles();
-                for (File file : this.selectedFiles){
-                    this.controller = new FileController(file);
-                    AddToLibAux(file);
-                    }
-                }
+            AddToLibAux(this.selectedFile);
             }
         }
     public void AddToLibAux(File file){
-        Model.addElement(file.getName());
-    }
-    public void SearchText(){
-        String search = ToSearch.getText();
-        this.controller.parser.Search(search);
+        if (file.isFile()){
+            Model.addElement(file.getName());
+            Files.add(file);
+        }else{
+            this.selectedFiles = file.listFiles();
+            for (File file1 : this.selectedFiles){
+                Model.addElement(file1.getName());
+                Files.add(file1);
+            }
+        }
     }
     public void RemoveFromLib(){
         int index = ListOfFiles.getSelectedIndex();
+        Files.remove(index);
         Model.remove(index);
     }
-    public void LibraryIndexing(){
-        for (int i = 0; i < this.selectedFiles.length; i++) {
-            File element = this.selectedFiles[i];
-            System.out.println("Elemento en el índice " + i + ": " + element.toURI().toString());
-        }
+    public void LibIndexing(){
+        this.controller = new FileController(this.Files);
+    }
+    //Aun no funciona como deberia
+    public void SearchText(){
+        String search = ToSearch.getText();
+        this.controller.parser.Search(search);
     }
     public static void main(String[] args) {
         new Main();

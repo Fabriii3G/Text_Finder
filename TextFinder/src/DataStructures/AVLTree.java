@@ -111,7 +111,6 @@ public class AVLTree {
         printTreeInorder(root);
     }
 
-    // Método recursivo para imprimir el árbol AVL en orden inorder
     private void printTreeInorder(AVLNode node) {
         if (node != null) {
             printTreeInorder(node.left);

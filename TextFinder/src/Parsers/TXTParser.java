@@ -21,7 +21,6 @@ public class TXTParser implements Parser{
             }
             String parsedText = parsedTextBuilder.toString();
             scanner.close();
-            System.out.println(parsedText);
             return parsedText;
         } catch (IOException e) {
             e.printStackTrace();
