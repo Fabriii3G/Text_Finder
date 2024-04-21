@@ -11,23 +11,21 @@ public class FileController {
     String name;
     Parser parser;
     AVLTree avlTree = new AVLTree();
+    SinglyLinkedList ocurrences = new SinglyLinkedList();
     public FileController(File file) {
         this.file = file;
         this.name = this.file.getName();
         if (name.endsWith(".docx")) {
             this.fileDOCX = file;
             parser = new DOCXParser(this.fileDOCX);
-            SinglyLinkedList ocurrences = new SinglyLinkedList();
             ToAVLTree(parser.parser(), ocurrences);
         } else if (name.endsWith(".pdf")) {
             this.filePDF = file;
             parser = new PDFParser(this.filePDF);
-            SinglyLinkedList ocurrences = new SinglyLinkedList();
             ToAVLTree(parser.parser(), ocurrences);
         } else {
             this.fileTXT = file;
             parser = new TXTParser(this.fileTXT);
-            SinglyLinkedList ocurrences = new SinglyLinkedList();
             ToAVLTree(parser.parser(), ocurrences);
         }
     }

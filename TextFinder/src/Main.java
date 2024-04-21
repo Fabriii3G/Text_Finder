@@ -25,7 +25,6 @@ public class Main extends JFrame {
         Model = new DefaultListModel();
         ListOfFiles.setModel(Model);
         setVisible(true);
-        System.out.println(AddButton.getBounds());
         AddButton.addActionListener(e -> AddToLib());
         RemoveButton.addActionListener(e -> RemoveFromLib());
         SearchButton.addActionListener(e -> SearchText());

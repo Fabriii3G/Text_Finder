@@ -1,22 +1,15 @@
 package DataStructures;
-class WordNode {
+class AVLNode {
     String word;
     SinglyLinkedList occurrences;
-
-    WordNode(String word) {
-        this.word = word;
-        this.occurrences = new SinglyLinkedList();
-    }
-}
-class AVLNode {
-    WordNode wordNode;
     int height;
     AVLNode left, right;
 
-    AVLNode(WordNode wordNode) {
-        this.wordNode = wordNode;
+    AVLNode(String word, SinglyLinkedList occurrences) {
+        this.word = word;
         this.height = 1;
         this.left = this.right = null;
+        this.occurrences = occurrences;
     }
 }
 
@@ -78,11 +71,11 @@ public class AVLTree {
     private AVLNode insertRecursive(AVLNode node, String word, SinglyLinkedList occurrence) {
         // Perform normal BST insertion
         if (node == null)
-            return new AVLNode(new WordNode(word));
+            return new AVLNode(word, occurrence);
 
-        if (word.compareTo(node.wordNode.word) < 0)
+        if (word.compareTo(node.word) < 0)
             node.left = insertRecursive(node.left, word, occurrence);
-        else if (word.compareTo(node.wordNode.word) > 0)
+        else if (word.compareTo(node.word) > 0)
             node.right = insertRecursive(node.right, word, occurrence);
 
         // Update height of this ancestor node
@@ -93,21 +86,21 @@ public class AVLTree {
 
         // If node becomes unbalanced, perform rotations
         // Left Left Case
-        if (balance > 1 && word.compareTo(node.left.wordNode.word) < 0)
+        if (balance > 1 && word.compareTo(node.left.word) < 0)
             return rightRotate(node);
 
         // Right Right Case
-        if (balance < -1 && word.compareTo(node.right.wordNode.word) > 0)
+        if (balance < -1 && word.compareTo(node.right.word) > 0)
             return leftRotate(node);
 
         // Left Right Case
-        if (balance > 1 && word.compareTo(node.left.wordNode.word) > 0) {
+        if (balance > 1 && word.compareTo(node.left.word) > 0) {
             node.left = leftRotate(node.left);
             return rightRotate(node);
         }
 
         // Right Left Case
-        if (balance < -1 && word.compareTo(node.right.wordNode.word) < 0) {
+        if (balance < -1 && word.compareTo(node.right.word) < 0) {
             node.right = rightRotate(node.right);
             return leftRotate(node);
         }
@@ -122,7 +115,7 @@ public class AVLTree {
     private void printTreeInorder(AVLNode node) {
         if (node != null) {
             printTreeInorder(node.left);
-            System.out.println("Word: " + node.wordNode.word + ", Occurrences: " + node.wordNode.occurrences);
+            System.out.println("Word: " + node.word + ", Occurrences: " + node.occurrences);
             printTreeInorder(node.right);
         }
     }
