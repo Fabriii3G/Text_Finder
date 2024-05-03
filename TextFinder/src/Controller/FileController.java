@@ -3,6 +3,7 @@ import java.io.File;
 import java.util.ArrayList;
 import Parsers.*;
 import DataStructures.*;
+import javax.swing.*;
 
 public class FileController {
     public File file;
@@ -47,33 +48,33 @@ public class FileController {
             System.out.println("El texto parseado está vacío o es nulo.");
         }
     }
-    public void search(ArrayList<File> files, String word){
+    public void search(ArrayList<File> files, String word, DefaultListModel<String> model){
         for (File file1 : files ) {
-            this.search_aux(file1, word);
+            this.search_aux(file1, word, model);
         }
     }
-    public void search_aux(File file, String word) {
+    public void search_aux(File file, String word, DefaultListModel<String> searchResultsModel) {
         String name = file.getName();
         if (name.endsWith(".docx")) {
             DOCXParser docxParser = new DOCXParser(file);
             String text = docxParser.parser();
             if (text.contains(word)) {
-                System.out.println("Se ha encontrado en:" + name);
+                searchResultsModel.addElement(name);
             }
         } else if (name.endsWith(".pdf")) {
             PDFParser pdfParser = new PDFParser(file);
             String text = pdfParser.parser();
             if (text.contains(word)) {
-                System.out.println("Se ha encontrado en:" + name);
+                searchResultsModel.addElement(name);;
             }
         } else if (name.endsWith(".txt")) {
             TXTParser txtParser = new TXTParser(file);
             String text = txtParser.parser();
             if (text.contains(word)) {
-                System.out.println("Se ha encontrado en:" + name);
+                searchResultsModel.addElement(name);
             }
         } else {
-            System.out.println("No se encuentra");
+            searchResultsModel.addElement("No está en la biblioteca");
         }
     }
 }

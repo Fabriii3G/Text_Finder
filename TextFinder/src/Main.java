@@ -14,7 +14,10 @@ public class Main extends JFrame {
     private File[] selectedFiles;
     private FileController controller;
     private JList ListOfFiles;
+    private JList list1;
+    private JButton abrirButton;
     private DefaultListModel<String> Model;
+    private DefaultListModel<String> searchResultsModel;
     private ArrayList<File> Files = new ArrayList<>();
 
     public Main(){
@@ -26,6 +29,8 @@ public class Main extends JFrame {
         Model = new DefaultListModel();
         ListOfFiles.setModel(Model);
         setVisible(true);
+        searchResultsModel = new DefaultListModel<>();
+        list1.setModel(searchResultsModel);
         AddButton.addActionListener(e -> AddToLib());
         RemoveButton.addActionListener(e -> RemoveFromLib());
         SearchButton.addActionListener(e -> SearchText());
@@ -63,7 +68,7 @@ public class Main extends JFrame {
     //Aun no funciona como deberia
     public void SearchText(){
         String search = ToSearch.getText();
-        this.controller.search(this.Files, search);
+        this.controller.search(this.Files, search, this.searchResultsModel);
     }
     public static void main(String[] args) {
         new Main();
