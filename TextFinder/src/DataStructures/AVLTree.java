@@ -5,11 +5,11 @@ class AVLNode {
     int height;
     AVLNode left, right;
 
-    AVLNode(String word, SinglyLinkedList occurrences) {
+    AVLNode(String word) {
         this.word = word;
         this.height = 1;
         this.left = this.right = null;
-        this.occurrences = occurrences;
+        this.occurrences = new SinglyLinkedList();
     }
 }
 
@@ -63,20 +63,20 @@ public class AVLTree {
     }
 
     // Insert a key into the tree
-    public void insert(String word, SinglyLinkedList occurrence) {
-        root = insertRecursive(root, word, occurrence);
+    public void insert(String word) {
+        root = insertRecursive(root, word);
     }
 
     // Recursive function to insert a key into the tree
-    private AVLNode insertRecursive(AVLNode node, String word, SinglyLinkedList occurrence) {
+    private AVLNode insertRecursive(AVLNode node, String word) {
         // Perform normal BST insertion
         if (node == null)
-            return new AVLNode(word, occurrence);
+            return new AVLNode(word);
 
         if (word.compareTo(node.word) < 0)
-            node.left = insertRecursive(node.left, word, occurrence);
+            node.left = insertRecursive(node.left, word);
         else if (word.compareTo(node.word) > 0)
-            node.right = insertRecursive(node.right, word, occurrence);
+            node.right = insertRecursive(node.right, word);
 
         // Update height of this ancestor node
         node.height = 1 + Math.max(height(node.left), height(node.right));

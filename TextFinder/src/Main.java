@@ -63,7 +63,7 @@ public class Main extends JFrame {
     //Aun no funciona como deberia
     public void SearchText(){
         String search = ToSearch.getText();
-        this.controller.parser.Search(search);
+        this.controller.search(this.Files, search);
     }
     public static void main(String[] args) {
         new Main();
