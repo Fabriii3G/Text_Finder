@@ -3,36 +3,44 @@ import java.io.File;
 import java.util.ArrayList;
 import Parsers.*;
 import DataStructures.*;
+import javax.swing.DefaultListModel;
+
 
 public class FileController {
     public File file;
-    public File files[];
+    //public File files[];
     public File fileDOCX;
     public File fileTXT;
     public File filePDF;
     public String name;
     public Parser parser;
     public AVLTree avlTree = new AVLTree();
+    public ArrayList<File> files;
+
+
+
     public FileController(ArrayList<File> files) {
-        for (File file : files){
+        this.files = files;
+        indexFiles();
+    }
+
+    public void indexFiles() {
+        for (File file : files) {
             FileControllerAux(file);
         }
     }
+
     public void FileControllerAux(File file) {
-        this.file = file;
-        this.name = this.file.getName();
+        String name = file.getName();
         if (name.endsWith(".docx")) {
-            this.fileDOCX = file;
-            parser = new DOCXParser(this.fileDOCX);
-            ToAVLTree(parser.parser());
+            DOCXParser docxParser = new DOCXParser(file);
+            ToAVLTree(docxParser.parser());
         } else if (name.endsWith(".pdf")) {
-            this.filePDF = file;
-            parser = new PDFParser(this.filePDF);
-            ToAVLTree(parser.parser());
-        } else {
-            this.fileTXT = file;
-            parser = new TXTParser(this.fileTXT);
-            ToAVLTree(parser.parser());
+            PDFParser pdfParser = new PDFParser(file);
+            ToAVLTree(pdfParser.parser());
+        } else if (name.endsWith(".txt")) {
+            TXTParser txtParser = new TXTParser(file);
+            ToAVLTree(txtParser.parser());
         }
     }
     public void ToAVLTree(String text){
@@ -47,33 +55,34 @@ public class FileController {
             System.out.println("El texto parseado está vacío o es nulo.");
         }
     }
-    public void search(ArrayList<File> files, String word){
-        for (File file1 : files ) {
-            this.search_aux(file1, word);
+    public void search(ArrayList<File> files, String word, DefaultListModel<String> model) {
+        for (File file : files) {
+            searchFile(file, word, model);
         }
     }
-    public void search_aux(File file, String word) {
+
+    public void searchFile(File file, String word, DefaultListModel<String> searchResultsModel) {
         String name = file.getName();
         if (name.endsWith(".docx")) {
             DOCXParser docxParser = new DOCXParser(file);
             String text = docxParser.parser();
             if (text.contains(word)) {
-                System.out.println("Se ha encontrado en:" + name);
+                searchResultsModel.addElement("Se ha encontrado en: " + file.getName());
             }
         } else if (name.endsWith(".pdf")) {
             PDFParser pdfParser = new PDFParser(file);
             String text = pdfParser.parser();
             if (text.contains(word)) {
-                System.out.println("Se ha encontrado en:" + name);
+                searchResultsModel.addElement("Se ha encontrado en: " + file.getName());
             }
         } else if (name.endsWith(".txt")) {
             TXTParser txtParser = new TXTParser(file);
             String text = txtParser.parser();
             if (text.contains(word)) {
-                System.out.println("Se ha encontrado en:" + name);
+                searchResultsModel.addElement("Se ha encontrado en: " + file.getName());
             }
         } else {
-            System.out.println("No se encuentra");
+            searchResultsModel.addElement("No se encuentra");
         }
     }
 }
