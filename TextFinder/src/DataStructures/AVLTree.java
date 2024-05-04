@@ -1,9 +1,9 @@
 package DataStructures;
 class AVLNode {
-    String word;
-    SinglyLinkedList occurrences;
-    int height;
-    AVLNode left, right;
+    public String word;
+    public SinglyLinkedList occurrences;
+    public int height;
+    public AVLNode left, right;
 
     AVLNode(String word) {
         this.word = word;
@@ -14,7 +14,7 @@ class AVLNode {
 }
 
 public class AVLTree {
-    private AVLNode root;
+    public AVLNode root;
 
     // Get height of node
     public int height(AVLNode node) {
@@ -63,20 +63,28 @@ public class AVLTree {
     }
 
     // Insert a key into the tree
-    public void insert(String word) {
-        root = insertRecursive(root, word);
+    public void insert(String word, int Pos, String doc) {
+        root = insertRecursive(root, word, Pos, doc);
     }
-
     // Recursive function to insert a key into the tree
-    private AVLNode insertRecursive(AVLNode node, String word) {
+    private AVLNode insertRecursive(AVLNode node, String word, int Pos, String doc) {
         // Perform normal BST insertion
-        if (node == null)
-            return new AVLNode(word);
-
-        if (word.compareTo(node.word) < 0)
-            node.left = insertRecursive(node.left, word);
-        else if (word.compareTo(node.word) > 0)
-            node.right = insertRecursive(node.right, word);
+        if (node == null){
+            AVLNode nuevo = new AVLNode(word);
+            nuevo.occurrences.add(Pos, doc);
+            return nuevo;
+        }
+        else if (word.compareTo(node.word) < 0){
+            node.left = insertRecursive(node.left, word, Pos, doc);
+            node.left.occurrences.add(Pos, doc);
+        }
+        else if (word.compareTo(node.word) > 0){
+            node.right = insertRecursive(node.right, word, Pos, doc);
+            node.right.occurrences.add(Pos, doc);
+        }
+        else if (word.compareTo(node.word) == 0){
+            node.occurrences.add(Pos, doc);
+        }
 
         // Update height of this ancestor node
         node.height = 1 + Math.max(height(node.left), height(node.right));
@@ -114,7 +122,7 @@ public class AVLTree {
     private void printTreeInorder(AVLNode node) {
         if (node != null) {
             printTreeInorder(node.left);
-            System.out.println("Word: " + node.word + ", Occurrences: " + node.occurrences);
+            System.out.println("Word: " + node.word + ", Occurrences: " + node.occurrences.getListAsString());
             printTreeInorder(node.right);
         }
     }

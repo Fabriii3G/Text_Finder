@@ -25,29 +25,32 @@ public class FileController {
         if (name.endsWith(".docx")) {
             this.fileDOCX = file;
             parser = new DOCXParser(this.fileDOCX);
-            ToAVLTree(parser.parser());
+            ToAVLTree(parser.parser(), name);
         } else if (name.endsWith(".pdf")) {
             this.filePDF = file;
             parser = new PDFParser(this.filePDF);
-            ToAVLTree(parser.parser());
+            ToAVLTree(parser.parser(), name);
         } else {
             this.fileTXT = file;
             parser = new TXTParser(this.fileTXT);
-            ToAVLTree(parser.parser());
+            ToAVLTree(parser.parser(), name);
         }
     }
-    public void ToAVLTree(String text){
+    public void ToAVLTree(String text, String Doc){
         if (text != null && !text.isEmpty()) {
             String[] words = text.split("\\s+");
+            int i = 1;
             for (String word : words) {
-                avlTree.insert(word);
+                avlTree.insert(word, i, Doc);
                 System.out.println(word);
+                i++;
             }
             avlTree.printTree();
         } else {
             System.out.println("El texto parseado está vacío o es nulo.");
         }
     }
+
     public void search(ArrayList<File> files, String word, DefaultListModel<String> model){
         for (File file1 : files ) {
             this.search_aux(file1, word, model);

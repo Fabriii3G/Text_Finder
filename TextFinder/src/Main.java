@@ -67,6 +67,7 @@ public class Main extends JFrame {
     }
     //Aun no funciona como deberia
     public void SearchText(){
+        this.searchResultsModel.clear();
         String search = ToSearch.getText();
         this.controller.search(this.Files, search, this.searchResultsModel);
     }
