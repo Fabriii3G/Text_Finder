@@ -1,6 +1,6 @@
 package Controller;
 import java.awt.*;
-import java.io.File;
+import java.io.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import Parsers.*;
@@ -50,21 +50,44 @@ public class FileController {
             document = PDDocument.load(file);
             renderer = new PDFRenderer(document);
             currentPage = 0;
-            displayPage(currentPage, scroll, label);
+            displayPage(currentPage, scroll, label, file);
         } catch (IOException e) {
             e.printStackTrace();
 
         }
     }
-    private void displayPage(int pageNumber, JScrollPane scroll, JLabel label) {
+    private void displayPage(int pageNumber, JScrollPane scroll, JLabel label, File file) {
         try {
             Image image = renderer.renderImage(pageNumber);
             ImageIcon icon = new ImageIcon(image);
-            label.setIcon(icon);
-            scroll.setViewportView(label);
+            //label.setIcon(icon);
+            parser = new PDFParser(file);
+            String text = parser.parser();
+            JTextArea textArea = new JTextArea();
+            textArea.setEditable(false);
+            scroll.setViewportView(textArea);
+            textArea.setText(text);
+            //scroll.setViewportView(label);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void OpenTXT(File file, JScrollPane scroll){
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        scroll.setViewportView(textArea);
+        parser = new TXTParser(file);
+        String text = parser.parser();
+        textArea.setText(text);
+    }
+
+    public void OpenDOCX(File file, JScrollPane scroll){
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        scroll.setViewportView(textArea);
+        parser = new DOCXParser(file);
+        String text = parser.parser();
+        textArea.setText(text);
     }
     public void ToAVLTree(String text, String Doc){
         if (text != null && !text.isEmpty()) {

@@ -42,12 +42,19 @@ public class Main extends JFrame {
         FilePanel.setVisible(false);
     }
     public void openFile(){
-        int index = list1.getSelectedIndex();
-        File file = SearchFiles.get(index);
         FilePanel.setBounds(345, 60, 297, 591);
         FilePanel.setSize(600, 800);
         FilePanel.setVisible(true);
-        this.controller.OpenPDF(file, FilePanel, PageLabel);
+        int index = list1.getSelectedIndex();
+        File file = SearchFiles.get(index);
+        String name = file.getName();
+        if(name.endsWith(".pdf")){
+            this.controller.OpenPDF(file, FilePanel, PageLabel);
+        }else if(name.endsWith(".txt")){
+            this.controller.OpenTXT(file, FilePanel);
+        }else{
+            this.controller.OpenDOCX(file, FilePanel);
+        }
     }
     public void AddToLib() {
         JFileChooser fileChooser = new JFileChooser();
