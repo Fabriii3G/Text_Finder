@@ -1,8 +1,13 @@
 package Controller;
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import Parsers.*;
 import DataStructures.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
+
 import javax.swing.*;
 
 public class FileController {
@@ -14,6 +19,10 @@ public class FileController {
     public String name;
     public Parser parser;
     public AVLTree avlTree = new AVLTree();
+    private File selectedFile;
+    private PDDocument document;
+    private PDFRenderer renderer;
+    private int currentPage = 0;
     public FileController(ArrayList<File> files) {
         for (File file : files){
             FileControllerAux(file);
@@ -36,6 +45,27 @@ public class FileController {
             ToAVLTree(parser.parser(), name);
         }
     }
+    public void OpenPDF(File file, JScrollPane scroll, JLabel label){
+        try {
+            document = PDDocument.load(file);
+            renderer = new PDFRenderer(document);
+            currentPage = 0;
+            displayPage(currentPage, scroll, label);
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+    }
+    private void displayPage(int pageNumber, JScrollPane scroll, JLabel label) {
+        try {
+            Image image = renderer.renderImage(pageNumber);
+            ImageIcon icon = new ImageIcon(image);
+            label.setIcon(icon);
+            scroll.setViewportView(label);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void ToAVLTree(String text, String Doc){
         if (text != null && !text.isEmpty()) {
             String[] words = text.split("\\s+");
@@ -51,30 +81,33 @@ public class FileController {
         }
     }
 
-    public void search(ArrayList<File> files, String word, DefaultListModel<String> model){
+    public void search(ArrayList<File> files, String word, DefaultListModel<String> model, ArrayList<File> SearchFiles){
         for (File file1 : files ) {
-            this.search_aux(file1, word, model);
+            this.search_aux(file1, word, model, SearchFiles);
         }
     }
-    public void search_aux(File file, String word, DefaultListModel<String> searchResultsModel) {
+    public void search_aux(File file, String word, DefaultListModel<String> searchResultsModel, ArrayList<File> SearchFiles) {
         String name = file.getName();
         if (name.endsWith(".docx")) {
             DOCXParser docxParser = new DOCXParser(file);
             String text = docxParser.parser();
             if (text.contains(word)) {
                 searchResultsModel.addElement(name);
+                SearchFiles.add(file);
             }
         } else if (name.endsWith(".pdf")) {
             PDFParser pdfParser = new PDFParser(file);
             String text = pdfParser.parser();
             if (text.contains(word)) {
-                searchResultsModel.addElement(name);;
+                searchResultsModel.addElement(name);
+                SearchFiles.add(file);
             }
         } else if (name.endsWith(".txt")) {
             TXTParser txtParser = new TXTParser(file);
             String text = txtParser.parser();
             if (text.contains(word)) {
                 searchResultsModel.addElement(name);
+                SearchFiles.add(file);
             }
         } else {
             searchResultsModel.addElement("No está en la biblioteca");
