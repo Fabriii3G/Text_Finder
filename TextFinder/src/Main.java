@@ -85,7 +85,6 @@ public class Main extends JFrame {
     public void LibIndexing(){
         this.controller = new FileController(this.Files);
     }
-    //Aun no funciona como deberia
     public void SearchText(){
         this.searchResultsModel.clear();
         String search = ToSearch.getText();

@@ -76,14 +76,14 @@ public class AVLTree {
         }
         else if (word.compareTo(node.word) < 0){
             node.left = insertRecursive(node.left, word, Pos, doc);
-            node.left.occurrences.add(Pos, doc);
         }
         else if (word.compareTo(node.word) > 0){
             node.right = insertRecursive(node.right, word, Pos, doc);
-            node.right.occurrences.add(Pos, doc);
         }
-        else if (word.compareTo(node.word) == 0){
+        else {
+            // Word already exists, update occurrences
             node.occurrences.add(Pos, doc);
+            return node;
         }
 
         // Update height of this ancestor node
@@ -115,6 +115,7 @@ public class AVLTree {
 
         return node;
     }
+
     public void printTree() {
         printTreeInorder(root);
     }
