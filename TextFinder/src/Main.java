@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-
+import java.awt.Desktop;
 import Controller.*;
 import DataStructures.SortingAlgorithms;
 
@@ -26,11 +26,13 @@ public class Main extends JFrame {
     private JButton QuickSortButton;
     private JButton BubbleSortButton;
     private JButton RadixSortButton;
+    private JButton OpenOnAppButton;
+    private JScrollPane LibScrollPane;
+    private JScrollPane SearchResultsPane;
     private DefaultListModel<String> Model;
     private DefaultListModel<String> searchResultsModel;
     private ArrayList<File> Files = new ArrayList<>();
     private ArrayList<File> SearchFiles = new ArrayList<>();
-    private SortingAlgorithms sortingAlgorithms;
 
     public Main(){
         setContentPane(MainPanel);
@@ -51,23 +53,11 @@ public class Main extends JFrame {
         QuickSortButton.addActionListener(e -> QuickSort());
         BubbleSortButton.addActionListener(e -> BubbleSort());
         RadixSortButton.addActionListener(e -> RadixSort());
+        OpenOnAppButton.addActionListener(e -> openFileOnApp());
         FilePanel.setVisible(false);
     }
-    public void openFile(){
-        FilePanel.setBounds(345, 60, 297, 591);
-        FilePanel.setSize(600, 800);
-        FilePanel.setVisible(true);
-        int index = list1.getSelectedIndex();
-        File file = SearchFiles.get(index);
-        String name = file.getName();
-        if(name.endsWith(".pdf")){
-            this.controller.OpenPDF(file, FilePanel);
-        }else if(name.endsWith(".txt")){
-            this.controller.OpenTXT(file, FilePanel);
-        }else{
-            this.controller.OpenDOCX(file, FilePanel);
-        }
-    }
+
+    // Manejo de la biblioteca
     public void AddToLib() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -97,6 +87,8 @@ public class Main extends JFrame {
     public void LibIndexing(){
         this.controller = new FileController(this.Files);
     }
+
+    // Buscar en el texto
     public void SearchText(){
         this.searchResultsModel.clear();
         this.SearchFiles.clear();
@@ -104,28 +96,57 @@ public class Main extends JFrame {
         this.controller.search(this.Files, search, this.searchResultsModel, this.SearchFiles);
     }
 
+    // Abrir archivos
+    public void openFile(){
+        FilePanel.setBounds(345, 60, 297, 591);
+        FilePanel.setSize(600, 800);
+        FilePanel.setVisible(true);
+        int index = list1.getSelectedIndex();
+        File file = SearchFiles.get(index);
+        String name = file.getName();
+        if(name.endsWith(".pdf")){
+            this.controller.OpenPDF(file, FilePanel);
+        }else if(name.endsWith(".txt")){
+            this.controller.OpenTXT(file, FilePanel);
+        }else{
+            this.controller.OpenDOCX(file, FilePanel);
+        }
+    }
+    public void openFileOnApp(){
+        int index = list1.getSelectedIndex();
+        File file = SearchFiles.get(index);
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                if (file.exists()) {
+                    desktop.open(file);
+                } else {
+                    System.out.println("El archivo no existe.");
+                }
+            } else {
+                System.out.println("El sistema no soporta la clase Desktop.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error al abrir el archivo: " + e.getMessage());
+        }
+
+    }
+
+    // Algoritmos de ordenamiento
     public void BubbleSort(){
         SortingAlgorithms sorting = new SortingAlgorithms(SearchFiles, searchResultsModel);
-        sorting.BubbleSort1();
-        sorting.BubbleSort2();
-        this.printFiles(SearchFiles);
+        sorting.BubbleSort();
+        sorting.RefreshModel();
     }
     public void QuickSort(){
         SortingAlgorithms sorting = new SortingAlgorithms(SearchFiles, searchResultsModel);
-        sorting.QuickSort1(SearchFiles, 0, SearchFiles.size() - 1);
-        sorting.QuickSort2(searchResultsModel, 0, searchResultsModel.size() - 1);
-        this.printFiles(SearchFiles);
+        sorting.QuickSort(SearchFiles, 0, SearchFiles.size() - 1);
+        sorting.RefreshModel();
     }
     public void RadixSort(){
         SortingAlgorithms sorting = new SortingAlgorithms(SearchFiles, searchResultsModel);
-        sorting.RadixSort1();
-        sorting.RadixSort2();
-    }
-    public void printFiles(ArrayList<File> files) {
-        for (File file : files) {
-            System.out.println(file.getName() + " - Fecha de creación: " + file.lastModified());
-        }
-        System.out.println();
+        sorting.RadixSort();
+        sorting.RefreshModel();
     }
     public static void main(String[] args) {
         new Main();

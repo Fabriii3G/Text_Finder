@@ -1,5 +1,4 @@
 package DataStructures;
-
 import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -8,15 +7,17 @@ public class SortingAlgorithms {
     private DefaultListModel<String> searchResultsModel;
     private ArrayList<File> SearchFiles;
 
-    public SortingAlgorithms(ArrayList<File> Files, DefaultListModel<String> Model){
+    public SortingAlgorithms(ArrayList<File> Files, DefaultListModel<String> Model) {
         this.searchResultsModel = Model;
         this.SearchFiles = Files;
     }
-    public void BubbleSort1(){
+
+    // Ordenar por fecha del archivo
+    public void BubbleSort() {
         int n = SearchFiles.size();
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
-                if (SearchFiles.get(j).getName().compareTo(SearchFiles.get(j + 1).getName()) > 0) {
+                if (SearchFiles.get(j).lastModified() > SearchFiles.get(j + 1).lastModified()) {
                     File temp = SearchFiles.get(j);
                     SearchFiles.set(j, SearchFiles.get(j + 1));
                     SearchFiles.set(j + 1, temp);
@@ -24,33 +25,20 @@ public class SortingAlgorithms {
             }
         }
     }
-    public void BubbleSort2(){
-        int n = searchResultsModel.getSize();
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (searchResultsModel.getElementAt(j).compareTo(searchResultsModel.getElementAt(j + 1)) > 0) {
-                    String temp = searchResultsModel.getElementAt(j);
-                    searchResultsModel.set(j, searchResultsModel.getElementAt(j + 1));
-                    searchResultsModel.set(j + 1, temp);
-                }
-            }
-        }
-    }
-    public void QuickSort1(ArrayList<File> fileList, int low, int high){
+    // Ordenar por nombre del archivo
+    public void QuickSort(ArrayList<File> fileList, int low, int high) {
         if (low < high) {
             int pi = Partition(SearchFiles, low, high);
-            QuickSort1(fileList, low, pi - 1);
-            QuickSort1(fileList, pi + 1, high);
+            QuickSort(fileList, low, pi - 1);
+            QuickSort(fileList, pi + 1, high);
         }
     }
-
-    public int Partition(ArrayList<File> fileList, int low, int high) {
+    private int Partition(ArrayList<File> fileList, int low, int high) {
         String pivot = fileList.get(high).getName();
         int i = (low - 1);
         for (int j = low; j < high; j++) {
             if (fileList.get(j).getName().compareTo(pivot) < 0) {
                 i++;
-
                 File temp = fileList.get(i);
                 fileList.set(i, fileList.get(j));
                 fileList.set(j, temp);
@@ -61,35 +49,53 @@ public class SortingAlgorithms {
         fileList.set(high, temp);
         return i + 1;
     }
-    public void QuickSort2(DefaultListModel<String> listModel, int low, int high) {
-        if (low < high) {
-            int pi = Partition(listModel, low, high);
-
-            QuickSort2(listModel, low, pi - 1);
-            QuickSort2(listModel, pi + 1, high);
+    // Ordenar por tamano de archivo
+    public void RadixSort(){
+        long max = GetMax(SearchFiles);
+        for (int exp = 1; max / exp > 0; exp *= 10) {
+            countSort(SearchFiles, exp);
         }
     }
-    public int Partition(DefaultListModel<String> listModel, int low, int high) {
-        String pivot = listModel.getElementAt(high);
-        int i = (low - 1);
-        for (int j = low; j < high; j++) {
-            if (listModel.getElementAt(j).compareTo(pivot) < 0) {
-                i++;
+    private void countSort(ArrayList<File> files, int exp) {
+        int n = files.size();
+        ArrayList<File> output = new ArrayList<>(n);
+        int[] count = new int[10];
+        for (int i = 0; i < 10; i++) {
+            count[i] = 0;
+        }
+        for (int i = 0; i < n; i++) {
+            int digit = (int) ((files.get(i).length() / exp) % 10);
+            count[digit]++;
+        }
+        for (int i = 1; i < 10; i++) {
+            count[i] += count[i - 1];
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            int digit = (int) ((files.get(i).length() / exp) % 10);
+            output.set(count[digit] - 1, files.get(i));
+            count[digit]--;
+        }
+        for (int i = 0; i < n; i++) {
+            files.set(i, output.get(i));
+        }
+    }
 
-                String temp = listModel.getElementAt(i);
-                listModel.set(i, listModel.getElementAt(j));
-                listModel.set(j, temp);
+    private long GetMax(ArrayList<File> files){
+        long max = files.get(0).length();
+        for (int i = 1; i < files.size(); i++) {
+            if (files.get(i).length() > max) {
+                max = files.get(i).length();
             }
         }
-        String temp = listModel.getElementAt(i + 1);
-        listModel.set(i + 1, listModel.getElementAt(high));
-        listModel.set(high, temp);
-        return i + 1;
+        return max;
     }
-    public void RadixSort1(){
 
-    }
-    public void RadixSort2(){
-
+    // Actualizar el list model
+    public void RefreshModel() {
+        searchResultsModel.clear();
+        for (File file : SearchFiles) {
+            String name = file.getName();
+            searchResultsModel.addElement(name);
+        }
     }
 }
