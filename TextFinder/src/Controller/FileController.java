@@ -45,32 +45,13 @@ public class FileController {
             ToAVLTree(parser.parser(), name);
         }
     }
-    public void OpenPDF(File file, JScrollPane scroll, JLabel label){
-        try {
-            document = PDDocument.load(file);
-            renderer = new PDFRenderer(document);
-            currentPage = 0;
-            displayPage(currentPage, scroll, label, file);
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
-    }
-    private void displayPage(int pageNumber, JScrollPane scroll, JLabel label, File file) {
-        try {
-            Image image = renderer.renderImage(pageNumber);
-            ImageIcon icon = new ImageIcon(image);
-            //label.setIcon(icon);
-            parser = new PDFParser(file);
-            String text = parser.parser();
-            JTextArea textArea = new JTextArea();
-            textArea.setEditable(false);
-            scroll.setViewportView(textArea);
-            textArea.setText(text);
-            //scroll.setViewportView(label);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void OpenPDF( File file, JScrollPane scroll) {
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        scroll.setViewportView(textArea);
+        parser = new PDFParser(file);
+        String text = parser.parser();
+        textArea.setText(text);
     }
     public void OpenTXT(File file, JScrollPane scroll){
         JTextArea textArea = new JTextArea();
