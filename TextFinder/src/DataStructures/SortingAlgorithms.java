@@ -67,8 +67,12 @@ public class SortingAlgorithms {
             int digit = (int) ((files.get(i).length() / exp) % 10);
             count[digit]++;
         }
-        for (int i = 1; i < 10; i++) {
-            count[i] += count[i - 1];
+        for (int i = 8; i >= 0; i--) {
+            count[i] += count[i + 1];
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            int digit = (int) ((files.get(i).length() / exp) % 10);
+            output.add(null);
         }
         for (int i = n - 1; i >= 0; i--) {
             int digit = (int) ((files.get(i).length() / exp) % 10);
