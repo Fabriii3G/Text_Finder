@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Controller.*;
+import DataStructures.SortingAlgorithms;
+
 public class Main extends JFrame {
     private JPanel MainPanel;
     private JTextField ToSearch;
@@ -28,6 +30,7 @@ public class Main extends JFrame {
     private DefaultListModel<String> searchResultsModel;
     private ArrayList<File> Files = new ArrayList<>();
     private ArrayList<File> SearchFiles = new ArrayList<>();
+    private SortingAlgorithms sortingAlgorithms;
 
     public Main(){
         setContentPane(MainPanel);
@@ -102,100 +105,21 @@ public class Main extends JFrame {
     }
 
     public void BubbleSort(){
-        this.BubbleSort1();
-        this.BubbleSort2();
+        SortingAlgorithms sorting = new SortingAlgorithms(SearchFiles, searchResultsModel);
+        sorting.BubbleSort1();
+        sorting.BubbleSort2();
         this.printFiles(SearchFiles);
     }
-
-    public void BubbleSort1(){
-        int n = SearchFiles.size();
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (SearchFiles.get(j).getName().compareTo(SearchFiles.get(j + 1).getName()) > 0) {
-                    File temp = SearchFiles.get(j);
-                    SearchFiles.set(j, SearchFiles.get(j + 1));
-                    SearchFiles.set(j + 1, temp);
-                }
-            }
-        }
-    }
-    public void BubbleSort2(){
-        int n = searchResultsModel.getSize();
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (searchResultsModel.getElementAt(j).compareTo(searchResultsModel.getElementAt(j + 1)) > 0) {
-                    String temp = searchResultsModel.getElementAt(j);
-                    searchResultsModel.set(j, searchResultsModel.getElementAt(j + 1));
-                    searchResultsModel.set(j + 1, temp);
-                }
-            }
-        }
-    }
-
     public void QuickSort(){
-        QuickSort1(SearchFiles, 0, SearchFiles.size() - 1);
-        QuickSort2(searchResultsModel, 0, searchResultsModel.size() - 1);
+        SortingAlgorithms sorting = new SortingAlgorithms(SearchFiles, searchResultsModel);
+        sorting.QuickSort1(SearchFiles, 0, SearchFiles.size() - 1);
+        sorting.QuickSort2(searchResultsModel, 0, searchResultsModel.size() - 1);
+        this.printFiles(SearchFiles);
     }
-    public void QuickSort1(ArrayList<File> fileList, int low, int high){
-        if (low < high) {
-            int pi = Partition(SearchFiles, low, high);
-            QuickSort1(fileList, low, pi - 1);
-            QuickSort1(fileList, pi + 1, high);
-        }
-    }
-
-    public int Partition(ArrayList<File> fileList, int low, int high) {
-        String pivot = fileList.get(high).getName();
-        int i = (low - 1);
-        for (int j = low; j < high; j++) {
-            if (fileList.get(j).getName().compareTo(pivot) < 0) {
-                i++;
-
-                File temp = fileList.get(i);
-                fileList.set(i, fileList.get(j));
-                fileList.set(j, temp);
-            }
-        }
-        File temp = fileList.get(i + 1);
-        fileList.set(i + 1, fileList.get(high));
-        fileList.set(high, temp);
-        return i + 1;
-    }
-    public void QuickSort2(DefaultListModel<String> listModel, int low, int high) {
-        if (low < high) {
-            int pi = Partition(listModel, low, high);
-
-            QuickSort2(listModel, low, pi - 1);
-            QuickSort2(listModel, pi + 1, high);
-        }
-    }
-    public int Partition(DefaultListModel<String> listModel, int low, int high) {
-        String pivot = listModel.getElementAt(high);
-        int i = (low - 1);
-        for (int j = low; j < high; j++) {
-            if (listModel.getElementAt(j).compareTo(pivot) < 0) {
-                i++;
-
-                String temp = listModel.getElementAt(i);
-                listModel.set(i, listModel.getElementAt(j));
-                listModel.set(j, temp);
-            }
-        }
-        String temp = listModel.getElementAt(i + 1);
-        listModel.set(i + 1, listModel.getElementAt(high));
-        listModel.set(high, temp);
-        return i + 1;
-    }
-
     public void RadixSort(){
-
-    }
-
-    public void RadixSort1(){
-
-    }
-    public void RadixSort2(){
-
+        SortingAlgorithms sorting = new SortingAlgorithms(SearchFiles, searchResultsModel);
+        sorting.RadixSort1();
+        sorting.RadixSort2();
     }
     public void printFiles(ArrayList<File> files) {
         for (File file : files) {
