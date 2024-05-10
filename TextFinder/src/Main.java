@@ -1,7 +1,7 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import Controller.*;
 import DataStructures.SortingAlgorithms;
@@ -31,6 +31,7 @@ public class Main extends JFrame {
     private ArrayList<File> Files = new ArrayList<>();
     private ArrayList<File> SearchFiles = new ArrayList<>();
     private SortingAlgorithms sortingAlgorithms;
+    private JButton AppButton;
 
     public Main(){
         setContentPane(MainPanel);
@@ -38,16 +39,21 @@ public class Main extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1300, 900);
         setLocationRelativeTo(null);
+
         Model = new DefaultListModel();
         ListOfFiles.setModel(Model);
         setVisible(true);
+
         searchResultsModel = new DefaultListModel<>();
         list1.setModel(searchResultsModel);
+
         AddButton.addActionListener(e -> AddToLib());
         RemoveButton.addActionListener(e -> RemoveFromLib());
         SearchButton.addActionListener(e -> SearchText());
         IndexingButton.addActionListener(e -> LibIndexing());
+
         openButton.addActionListener(e -> openFile());
+
         QuickSortButton.addActionListener(e -> QuickSort());
         BubbleSortButton.addActionListener(e -> BubbleSort());
         RadixSortButton.addActionListener(e -> RadixSort());
