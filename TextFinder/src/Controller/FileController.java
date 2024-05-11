@@ -45,31 +45,58 @@ public class FileController {
             ToAVLTree(parser.parser(), name);
         }
     }
-    public void OpenPDF( File file, JScrollPane scroll) {
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        scroll.setViewportView(textArea);
-        parser = new PDFParser(file);
-        String text = parser.parser();
-        textArea.setText(text);
-    }
-    public void OpenTXT(File file, JScrollPane scroll){
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        scroll.setViewportView(textArea);
-        parser = new TXTParser(file);
-        String text = parser.parser();
-        textArea.setText(text);
+
+    public String highlightWord(String text, String word) {
+        return text.replaceAll("(?i)" + word, "<u><b>$0</b></u>");
     }
 
-    public void OpenDOCX(File file, JScrollPane scroll){
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        scroll.setViewportView(textArea);
+
+    public void OpenPDF(File file, JScrollPane scroll, JTextField toSearch) {
+        JTextPane textPane = new JTextPane();
+        textPane.setEditable(false);
+        scroll.setViewportView(textPane);
+        parser = new PDFParser(file);
+        String text = parser.parser();
+        text = text.replaceAll("\n", "<br>");
+        text = highlightWord(text, toSearch.getText());
+        String style = "<style>.highlight { color: red; }</style>";
+        text = text.replaceAll(toSearch.getText(), "<span class='highlight'>" + toSearch.getText() + "</span>");
+        textPane.setContentType("text/html");
+        textPane.setText("<html><head>" + style + "</head><body>" + text + "</body></html>");
+    }
+
+
+    public void OpenTXT(File file, JScrollPane scroll, JTextField toSearch) {
+        JTextPane textPane = new JTextPane();
+        textPane.setEditable(false);
+        scroll.setViewportView(textPane);
+        parser = new TXTParser(file);
+        String text = parser.parser();
+        text = text.replaceAll("\n", "<br>");
+        text = highlightWord(text, toSearch.getText());
+        String style = "<style>.highlight { color: red; }</style>";
+        text = text.replaceAll(toSearch.getText(), "<span class='highlight'>" + toSearch.getText() + "</span>");
+        textPane.setContentType("text/html");
+        textPane.setText("<html><head>" + style + "</head><body>" + text + "</body></html>");
+    }
+
+    public void OpenDOCX(File file, JScrollPane scroll, JTextField toSearch) {
+        JTextPane textPane = new JTextPane();
+        textPane.setEditable(false);
+        scroll.setViewportView(textPane);
         parser = new DOCXParser(file);
         String text = parser.parser();
-        textArea.setText(text);
+        text = text.replaceAll("\n", "<br>");
+        text = highlightWord(text, toSearch.getText());
+        String style = "<style>.highlight { color: red; }</style>";
+        text = text.replaceAll(toSearch.getText(), "<span class='highlight'>" + toSearch.getText() + "</span>");
+        textPane.setContentType("text/html");
+        textPane.setText("<html><head>" + style + "</head><body>" + text + "</body></html>");
     }
+
+
+
+
     public void ToAVLTree(String text, String Doc){
         if (text != null && !text.isEmpty()) {
             String[] words = text.split("\\s+");

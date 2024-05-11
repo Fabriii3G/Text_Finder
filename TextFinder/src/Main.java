@@ -105,11 +105,11 @@ public class Main extends JFrame {
         File file = SearchFiles.get(index);
         String name = file.getName();
         if(name.endsWith(".pdf")){
-            this.controller.OpenPDF(file, FilePanel);
+            this.controller.OpenPDF(file, FilePanel, ToSearch); // Pasar ToSearch como parámetro
         }else if(name.endsWith(".txt")){
-            this.controller.OpenTXT(file, FilePanel);
+            this.controller.OpenTXT(file, FilePanel, ToSearch); // Pasar ToSearch como parámetro
         }else{
-            this.controller.OpenDOCX(file, FilePanel);
+            this.controller.OpenDOCX(file, FilePanel, ToSearch); // Pasar ToSearch como parámetro
         }
     }
     public void openFileOnApp(){
@@ -131,6 +131,9 @@ public class Main extends JFrame {
         }
 
     }
+
+
+
 
     // Algoritmos de ordenamiento
     public void BubbleSort(){
