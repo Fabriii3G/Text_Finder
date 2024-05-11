@@ -56,7 +56,6 @@ public class Main extends JFrame {
         QuickSortButton.addActionListener(e -> QuickSort());
         BubbleSortButton.addActionListener(e -> BubbleSort());
         RadixSortButton.addActionListener(e -> RadixSort());
-        OpenOnAppButton.addActionListener(e -> openFileOnApp());
         FilePanel.setVisible(false);
     }
 
