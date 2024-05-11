@@ -8,12 +8,10 @@ public class DOCXParser implements Parser {
     File DOCX;
     String DOCXPath;
     String parsedText;
-    public int WordCounter;
     public DOCXParser(File DOCXFile){
         this.DOCX = DOCXFile;
         this.DOCXPath = this.DOCX.getPath();
         this.parsedText = parser();
-        this.WordCounter = countWords(this.parsedText);
     }
     @Override
     public String parser() {
@@ -28,12 +26,5 @@ public class DOCXParser implements Parser {
             e.printStackTrace();
         }
         return null;
-    }
-    private int countWords(String text) {
-        if (text == null || text.isEmpty()) {
-            return 0;
-        }
-        String[] words = text.split("\\s+");
-        return words.length;
     }
 }

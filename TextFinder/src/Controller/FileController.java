@@ -1,7 +1,5 @@
 package Controller;
-import java.awt.*;
 import java.io.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import Parsers.*;
 import DataStructures.*;
@@ -12,17 +10,12 @@ import javax.swing.*;
 
 public class FileController {
     public File file;
-    public File files[];
     public File fileDOCX;
     public File fileTXT;
     public File filePDF;
     public String name;
     public Parser parser;
     public AVLTree avlTree = new AVLTree();
-    private File selectedFile;
-    private PDDocument document;
-    private PDFRenderer renderer;
-    private int currentPage = 0;
     public FileController(ArrayList<File> files) {
         for (File file : files){
             FileControllerAux(file);
@@ -65,7 +58,6 @@ public class FileController {
         textPane.setText("<html><head>" + style + "</head><body>" + text + "</body></html>");
     }
 
-
     public void OpenTXT(File file, JScrollPane scroll, JTextField toSearch) {
         JTextPane textPane = new JTextPane();
         textPane.setEditable(false);
@@ -93,9 +85,6 @@ public class FileController {
         textPane.setContentType("text/html");
         textPane.setText("<html><head>" + style + "</head><body>" + text + "</body></html>");
     }
-
-
-
 
     public void ToAVLTree(String text, String Doc){
         if (text != null && !text.isEmpty()) {
