@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class Main extends JFrame {
     private DefaultListModel<String> searchResultsModel;
     private ArrayList<File> Files = new ArrayList<>();
     private ArrayList<File> SearchFiles = new ArrayList<>();
+    private SortingAlgorithms sortingAlgorithms;
+    private JButton AppButton;
 
     public Main(){
         setContentPane(MainPanel);
