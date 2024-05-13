@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class Main extends JFrame {
     private DefaultListModel<String> searchResultsModel;
     private ArrayList<File> Files = new ArrayList<>();
     private ArrayList<File> SearchFiles = new ArrayList<>();
+    private JButton AppButton;
 
     public Main(){
         setContentPane(MainPanel);
@@ -53,7 +55,7 @@ public class Main extends JFrame {
         QuickSortButton.addActionListener(e -> QuickSort());
         BubbleSortButton.addActionListener(e -> BubbleSort());
         RadixSortButton.addActionListener(e -> RadixSort());
-        OpenOnAppButton.addActionListener(e -> openFileOnApp());
+        AppButton.addActionListener(e -> openFileOnApp());
         FilePanel.setVisible(false);
     }
 
@@ -131,9 +133,6 @@ public class Main extends JFrame {
         }
 
     }
-
-
-
 
     // Algoritmos de ordenamiento
     public void BubbleSort(){
