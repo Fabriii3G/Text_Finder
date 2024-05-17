@@ -100,8 +100,6 @@ public class Main extends JFrame {
 
     // Abrir archivos
     public void openFile(){
-        FilePanel.setBounds(345, 60, 297, 591);
-        FilePanel.setSize(600, 800);
         FilePanel.setVisible(true);
         int index = list1.getSelectedIndex();
         File file = SearchFiles.get(index);
